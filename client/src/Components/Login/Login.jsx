@@ -1,14 +1,24 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserAuth } from '../../context/AuthContext';
+
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const { signIn } = UserAuth();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await signIn(email, password).then((response) => {
+        sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
+      })
+      navigate('/dashboard')
+    } catch (e) {
+      console.log(e.message)
+    }
   };
 
   return (

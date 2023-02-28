@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { UserAuth } from '../../context/AuthContext';
-import { auth } from '../../firebase';
 
 
 function Register() {
@@ -16,13 +15,14 @@ function Register() {
   const [branch, setBranch] = useState('IT');
   const [division, setDivison] = useState('A');
 
-  const { createUser, user } = UserAuth();
+  const { createUser } = UserAuth();
   const navigate = useNavigate()
 
 
   const onSubmit = async (event) => {
     try {
       const cred = await createUser(email, password);
+      sessionStorage.setItem('Auth Token', cred._tokenResponse.refreshToken)
       const token = cred.user.accessToken
       const data = {
         name: name,

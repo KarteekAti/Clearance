@@ -5,7 +5,7 @@ import { AuthContextProvider } from './context/AuthContext';
 
 
 function App() {
-  const [currentForm, setCurrentForm] = useState('login');
+  
 
   return (
     <AuthContextProvider>
