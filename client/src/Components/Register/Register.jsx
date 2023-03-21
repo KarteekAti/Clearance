@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { UserAuth } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
+
 
 
 function Register() {
@@ -15,14 +17,22 @@ function Register() {
   const [branch, setBranch] = useState('IT');
   const [division, setDivison] = useState('A');
 
-  const { createUser } = UserAuth();
+  const { createUser, logout, user } = UserAuth();
   const navigate = useNavigate()
 
+
+  useEffect(() => {
+    async function signOut() {
+      if (user) {
+        await logout()
+      }
+    }
+    signOut()
+  }, [])
 
   const onSubmit = async (event) => {
     try {
       const cred = await createUser(email, password);
-      sessionStorage.setItem('Auth Token', cred._tokenResponse.refreshToken)
       const token = cred.user.accessToken
       const data = {
         name: name,
@@ -38,16 +48,17 @@ function Register() {
         headers: { authorization: `Bearer ${token}`, "Content-Type": "application/json", },
         body: JSON.stringify(data)
       })
-
+      toast.success('Registration Successful!')
       navigate('/dashboard')
     } catch (e) {
+      toast.error(e.message)
       console.log(e.message);
     }
   }
 
   return (
     <div className="flex justify-center bg-gray-100 items-center h-screen">
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 xl:w-1/4">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
         <h2 className="text-2xl font-bold mb-4">Registration</h2>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="name">
@@ -123,7 +134,7 @@ function Register() {
           />
           {errors.confirm_password && <p className="text-red-500">Password does not match.</p>}
         </div>
-        <div className="mb-4 flex justify-center items-center gap-2">
+        <div className="mb-4 flex justify-between items-center gap-2">
           <div>
             <label className="block text-gray-700 font-bold mb-2" htmlFor="year">
               Year

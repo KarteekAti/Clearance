@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
+
 
 
 function Login() {
@@ -12,12 +14,12 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signIn(email, password).then((response) => {
-        sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
-      })
+      await signIn(email, password)
+      toast.success('Login Successful!')
       navigate('/dashboard')
-    } catch (e) {
-      console.log(e.message)
+    } catch (error) {
+      toast.error(error.message)
+      console.log(error.message)
     }
   };
 
