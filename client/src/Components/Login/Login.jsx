@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
@@ -9,14 +9,24 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { signIn } = UserAuth();
+  const { signIn,user,logout } = UserAuth();
 
+  useEffect(() => {
+    async function signOut() {
+      if (user) {
+        await logout()
+      }
+    }
+    signOut()
+  }, [])
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await signIn(email, password)
       toast.success('Login Successful!')
       navigate('/dashboard')
+      
     } catch (error) {
       toast.error(error.message)
       console.log(error.message)

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
@@ -11,6 +12,7 @@ export default function ChangePass() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const navigate = useNavigate()
 
 
     const onSubmit = async (event) => {
@@ -30,6 +32,8 @@ export default function ChangePass() {
                         toast.error(error.message)
                         console.error(error);
                     });
+                    navigate('/login')
+
             })
             .catch((error) => {
                 toast.error(error.message)

@@ -1,5 +1,5 @@
 import express from "express";
-import { register } from "./student-controller.js";
+import { register, teacher } from "./student-controller.js";
 import auth from '../middleware/auth.js'
 import cors from 'cors'
 
@@ -10,5 +10,6 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 
 router.post('/register', auth, register);
+router.post('/register/teacher', auth, teacher);
 
 export default router;
