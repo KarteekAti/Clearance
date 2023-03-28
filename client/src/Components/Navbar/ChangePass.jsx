@@ -32,7 +32,7 @@ export default function ChangePass() {
                         toast.error(error.message)
                         console.error(error);
                     });
-                    navigate('/login')
+                navigate('/login')
 
             })
             .catch((error) => {
@@ -54,22 +54,7 @@ export default function ChangePass() {
                 <span className="text-red-500">Password must be at least 6 characters</span>
             )}
 
-            <input
-                id="confirmCurrentPassword"
-                type="password"
-                placeholder="Confirm Current Password"
-                {...register("confirmCurrentPassword", {
-                    required: true,
-                    validate: (value) => value === currentPassword,
-                })}
-                className="mt-4 px-3 py-2 placeholder-gray-400 text-gray-700 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full"
-            />
-            {errors?.confirmCurrentPassword && errors?.confirmCurrentPassword?.type === "required" && (
-                <span className="text-red-500">This field is required</span>
-            )}
-            {errors?.confirmCurrentPassword && errors?.confirmCurrentPassword?.type === "validate" && (
-                <span className="text-red-500">Passwords must match</span>
-            )}
+
 
             <input
                 id="newPassword"
@@ -85,6 +70,22 @@ export default function ChangePass() {
             )}
             {errors?.newPassword && errors?.newPassword?.type === "minLength" && (
                 <span className="text-red-500">Password must be at least 6 characters</span>
+            )}
+            <input
+                id="confirmNewPassword"
+                type="password"
+                placeholder="Confirm New Password"
+                {...register("confirmNewPassword", {
+                    required: true,
+                    validate: (value) => value === newPassword,
+                })}
+                className="mt-4 px-3 py-2 placeholder-gray-400 text-gray-700 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full"
+            />
+            {errors?.confirmNewPassword && errors?.confirmNewPassword?.type === "required" && (
+                <span className="text-red-500">This field is required</span>
+            )}
+            {errors?.confirmNewPassword && errors?.confirmNewPassword?.type === "validate" && (
+                <span className="text-red-500">Passwords must match</span>
             )}
 
             <button

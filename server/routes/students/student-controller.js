@@ -1,4 +1,4 @@
-import fapp from '../firebase.js'
+import fapp from '../../firebase.js'
 import { getFirestore } from "firebase-admin/firestore";
 import admin from 'firebase-admin';
 
@@ -21,33 +21,12 @@ export const register = async (req, res) => {
             Email: body.email,
             Academic_Year: body.year,
             Branch: body.branch,
-            Division: body.division
+            Division: body.division,
+            PhoneNumber: body.phone,
+            RollNo: body.roll,
+            PrnNo: body.prn,
         };
         await db.collection('student').doc(uid).set(data, { merge: true });
-        res.status(200).json({ message: "Login successful!" });
-    } catch (e) {
-        console.log(e)
-        res.status(404).json(e);
-    }
-}
-
-export const teacher = async (req, res) => {
-    console.log("Inside login function");
-
-    try {
-        const uid = req['user'].uid
-
-        admin.auth().setCustomUserClaims(uid, {
-            teacher: true
-        })
-        const body = req.body;
-        const data = {
-            Name: body.name,
-            Email: body.email,
-            Designation: body.designation,
-            Branch: body.branch,
-        };
-        await db.collection('teacher').doc(uid).set(data, { merge: true });
         res.status(200).json({ message: "Login successful!" });
     } catch (e) {
         console.log(e)

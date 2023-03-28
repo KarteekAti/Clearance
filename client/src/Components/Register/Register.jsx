@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { UserAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
+import { updateProfile } from 'firebase/auth';
+import { auth } from '../../firebase';
 
 
 
@@ -16,6 +18,9 @@ function Register() {
   const [year, setYear] = useState('FY');
   const [branch, setBranch] = useState('IT');
   const [division, setDivison] = useState('A');
+  const [phone, setPhone] = useState();
+  const [roll, setRoll] = useState('');
+  const [prn, setPrn] = useState('');
 
   const { createUser, logout, user } = UserAuth();
   const navigate = useNavigate()
@@ -33,13 +38,18 @@ function Register() {
   const onSubmit = async (event) => {
     try {
       const cred = await createUser(email, password);
+      await updateProfile(auth.currentUser, { displayName: name })
+      console.log(cred)
       const token = cred.user.accessToken
       const data = {
         name: name,
         email: email,
         year: year,
         branch: branch,
-        division: division
+        division: division,
+        phone: phone,
+        roll: roll,
+        prn: prn,
       }
 
       fetch('/student/register', {
@@ -49,7 +59,7 @@ function Register() {
         body: JSON.stringify(data)
       })
       toast.success('Registration Successful!')
-      navigate('/dashboard')
+      navigate('/')
     } catch (e) {
       toast.error(e.message)
       console.log(e.message);
@@ -57,8 +67,8 @@ function Register() {
   }
 
   return (
-    <div className="flex justify-center bg-gray-100 items-center h-screen">
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
+    <div className="flex justify-center bg-gray-100 items-center h-[calc(100vh-64.5px)]">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white h-2/3 shadow-md rounded px-8 pt-6 pb-8 mb-4 overflow-scroll">
         <h2 className="text-2xl font-bold mb-4">Registration</h2>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="name">
@@ -110,7 +120,7 @@ function Register() {
             })}
             onChange={(event) => setPassword(event.target.value)}
           />
-          {errors.password && <p className="text-red-500">Please check the Password</p>}
+          {errors.password && <p className="text-red-500">Password is weak</p>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="password">
@@ -132,7 +142,52 @@ function Register() {
               },
             })}
           />
-          {errors.confirm_password && <p className="text-red-500">Password does not match.</p>}
+          {errors.confirm_password && <p className="text-red-500">Password doesn't Match or Weak</p>}
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="phone">
+            Phone Number
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="phone"
+            type="text"
+            placeholder="Enter your Phone Number"
+            value={phone}
+            {...register('phone', { required: true })}
+            onChange={(event) => setName(event.target.value)}
+          />
+          {errors.phone && <p className="text-red-500">Enter your Phone Number</p>}
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="roll">
+            Roll Number
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="roll"
+            type="text"
+            placeholder="Enter your Roll Number"
+            value={roll}
+            {...register('roll', { required: true })}
+            onChange={(event) => setName(event.target.value)}
+          />
+          {errors.roll && <p className="text-red-500">Enter your Roll Number</p>}
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="name">
+            Phone
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="phone"
+            type="text"
+            placeholder="Enter your Phone Number"
+            value={phone}
+            {...register('phone', { required: true })}
+            onChange={(event) => setName(event.target.value)}
+          />
+          {errors.phone && <p className="text-red-500">Enter your Phone Number</p>}
         </div>
         <div className="mb-4 flex justify-between items-center gap-2">
           <div>

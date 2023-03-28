@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
@@ -9,7 +9,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { signIn,user,logout } = UserAuth();
+  const { signIn, user, logout } = UserAuth();
 
   useEffect(() => {
     async function signOut() {
@@ -19,14 +19,14 @@ function Login() {
     }
     signOut()
   }, [])
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await signIn(email, password)
       toast.success('Login Successful!')
       navigate('/dashboard')
-      
+
     } catch (error) {
       toast.error(error.message)
       console.log(error.message)
@@ -34,7 +34,7 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center">
+    <div className="h-[calc(100vh-64.5px)] bg-gray-100 flex justify-center items-center">
       <div className="bg-white p-8 rounded shadow-md max-w-md w-full">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         <form onSubmit={handleSubmit}>

@@ -1,9 +1,29 @@
-import { Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
+import { auth } from '../../firebase';
+
 
 
 export default function UserDropdownMenu() {
+    const [isStudent, setStudent] = useState(false);
+    const [isTeacher, setTeacher] = useState(false);
+    const [isAdmin, setAdmin] = useState(false);
+
+    useEffect(() => {
+        const role = async () => {
+            if (auth.currentUser) {
+                auth.currentUser.getIdTokenResult().then(idToken => {
+                    setStudent(idToken?.claims.student)
+                    setTeacher(idToken?.claims.teacher)
+                    setAdmin(idToken?.claims.superAdmin)
+                    console.log(isAdmin)
+                })
+            }
+        }
+        role()
+    })
+
     return (
         <Menu as="div" className="relative inline-block text-left">
             <div>
@@ -26,6 +46,32 @@ export default function UserDropdownMenu() {
             >
                 <Menu.Items className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
+                        {isAdmin && (
+                            <Menu.Item>
+                                {({ active }) => (
+                                    <a
+                                        href="/addTeacher"
+                                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}
+                              block w-full text-left px-4 py-2 text-sm`}
+                                    >
+                                        Add Teacher
+                                    </a>
+                                )}
+                            </Menu.Item>
+                        )}
+                        {isTeacher && (
+                            <Menu.Item>
+                                {({ active }) => (
+                                    <a
+                                        href="/createRoom"
+                                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}
+                              block w-full text-left px-4 py-2 text-sm`}
+                                    >
+                                        Create Classroom
+                                    </a>
+                                )}
+                            </Menu.Item>
+                        )}
                         <Menu.Item>
                             {({ active }) => (
                                 <a
