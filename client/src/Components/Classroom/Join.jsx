@@ -22,9 +22,5 @@ function Join() {
         }
         joinClass()
     }, [])
-
-    return (
-        <div></div>
-    )
 }
 export default Join

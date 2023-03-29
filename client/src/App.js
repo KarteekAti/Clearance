@@ -11,6 +11,7 @@ import Signout from './Components/Navbar/Signout';
 import ChangePass from './Components/Navbar/ChangePass';
 import Create from './Components/Classroom/Create';
 import Join from './Components/Classroom/Join';
+import Dashboard from './Components/Dashboard/Dashboard';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/addTeacher" element={<Wrapper access='Admin'><Teacher /></Wrapper>} />
           <Route path="/createRoom" element={<Wrapper access='Teacher'><Create /></Wrapper>} />
           <Route exact path="/join/:roomId" element={<Wrapper access='Student'><Join /></Wrapper>} />
+          <Route exact path="/dashboard" element={<Dashboard />} />
           <Route path='/logout' element={<Signout />} />
           <Route path='/changePassword' element={<ChangePass />} />
         </Routes>
