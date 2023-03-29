@@ -175,19 +175,19 @@ function Register() {
           {errors.roll && <p className="text-red-500">Enter your Roll Number</p>}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="name">
-            Phone
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="prn">
+            PRN Number
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="phone"
             type="text"
-            placeholder="Enter your Phone Number"
-            value={phone}
+            placeholder="Enter your PRN Number"
+            value={prn}
             {...register('phone', { required: true })}
             onChange={(event) => setName(event.target.value)}
           />
-          {errors.phone && <p className="text-red-500">Enter your Phone Number</p>}
+          {errors.prn && <p className="text-red-500">Enter your PRN Number</p>}
         </div>
         <div className="mb-4 flex justify-between items-center gap-2">
           <div>
