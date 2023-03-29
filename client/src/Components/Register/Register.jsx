@@ -18,7 +18,7 @@ function Register() {
   const [year, setYear] = useState('FY');
   const [branch, setBranch] = useState('IT');
   const [division, setDivison] = useState('A');
-  const [phone, setPhone] = useState();
+  const [phone, setPhone] = useState('');
   const [roll, setRoll] = useState('');
   const [prn, setPrn] = useState('');
 
@@ -70,6 +70,7 @@ function Register() {
     <div className="flex justify-center bg-gray-100 items-center h-[calc(100vh-64.5px)]">
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white h-2/3 shadow-md rounded px-8 pt-6 pb-8 mb-4 overflow-scroll">
         <h2 className="text-2xl font-bold mb-4">Registration</h2>
+
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="name">
             Name
@@ -85,6 +86,7 @@ function Register() {
           />
           {errors.name && <p className="text-red-500">Enter your Name</p>}
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
             Email
@@ -104,6 +106,7 @@ function Register() {
           />
           {errors.email && <p className="text-red-500">Enter valid Email Address</p>}
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="password">
             Password
@@ -122,6 +125,7 @@ function Register() {
           />
           {errors.password && <p className="text-red-500">Password is weak</p>}
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="password">
             Confirm Password
@@ -144,6 +148,7 @@ function Register() {
           />
           {errors.confirm_password && <p className="text-red-500">Password doesn't Match or Weak</p>}
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="phone">
             Phone Number
@@ -154,11 +159,19 @@ function Register() {
             type="text"
             placeholder="Enter your Phone Number"
             value={phone}
-            {...register('phone', { required: true })}
-            onChange={(event) => setName(event.target.value)}
+            {...register('phone', {
+              required: true, pattern: /^[0-9]{10}$/,
+              validate: (val) => {
+                if (watch('phone') !== val) {
+                  return "Your Phone number should contain numbers and should be of 10 digits.";
+                }
+              },
+            })}
+            onChange={(event) => setPhone(event.target.value)}
           />
           {errors.phone && <p className="text-red-500">Enter your Phone Number</p>}
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="roll">
             Roll Number
@@ -170,25 +183,27 @@ function Register() {
             placeholder="Enter your Roll Number"
             value={roll}
             {...register('roll', { required: true })}
-            onChange={(event) => setName(event.target.value)}
+            onChange={(event) => setRoll(event.target.value)}
           />
           {errors.roll && <p className="text-red-500">Enter your Roll Number</p>}
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="prn">
             PRN Number
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="phone"
+            id="prn"
             type="text"
             placeholder="Enter your PRN Number"
             value={prn}
-            {...register('phone', { required: true })}
-            onChange={(event) => setName(event.target.value)}
+            {...register('prn', { required: true })}
+            onChange={(event) => setPrn(event.target.value)}
           />
           {errors.prn && <p className="text-red-500">Enter your PRN Number</p>}
         </div>
+
         <div className="mb-4 flex justify-between items-center gap-2">
           <div>
             <label className="block text-gray-700 font-bold mb-2" htmlFor="year">
