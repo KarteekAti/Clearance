@@ -169,7 +169,7 @@ function Register() {
             })}
             onChange={(event) => setPhone(event.target.value)}
           />
-          {errors.phone && <p className="text-red-500">Enter your Phone Number</p>}
+          {errors.phone && <p className="text-red-500">Your Phone number should contain numbers and should be of 10 digits.</p>}
         </div>
 
         <div className="mb-4">
